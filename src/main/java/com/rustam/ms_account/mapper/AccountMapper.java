@@ -1,8 +1,6 @@
 package com.rustam.ms_account.mapper;
 
 import com.rustam.ms_account.dao.entity.Account;
-import com.rustam.ms_account.dto.AccountDto;
-import com.rustam.ms_account.dto.request.AccountRequest;
 import com.rustam.ms_account.dto.response.AccountIncreaseResponse;
 import com.rustam.ms_account.dto.response.AccountResponse;
 import org.mapstruct.*;
