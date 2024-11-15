@@ -3,7 +3,6 @@ package com.rustam.ms_account.service;
 import com.rustam.ms_account.dao.entity.Account;
 import com.rustam.ms_account.dao.enums.AccountStatus;
 import com.rustam.ms_account.dao.repository.AccountRepository;
-import com.rustam.ms_account.dto.AccountDto;
 import com.rustam.ms_account.dto.request.AccountIncreaseRequest;
 import com.rustam.ms_account.dto.request.AccountRequest;
 import com.rustam.ms_account.dto.response.AccountIncreaseResponse;
@@ -41,7 +40,7 @@ public class AccountService {
                 .status(AccountStatus.ACTIVATED)
                 .build();
         accountRepository.save(account);
-        return accountMapper.INSTANCE.toDto(account);
+        return accountMapper.toDto(account);
     }
 
     public List<Account> readAssets() {
@@ -74,17 +73,18 @@ public class AccountService {
         Account account = accountRepository.findByUsername(accountRequest.getUsername());
         account.setCurrency(accountRequest.getCurrency());
         accountRepository.save(account);
-        return AccountMapper.INSTANCE.toDto(account);
+        return accountMapper.toDto(account);
     }
 
     @Transactional
     public AccountIncreaseResponse accountIncrease(AccountIncreaseRequest accountIncreaseRequest) {
         Account account = findByAccountIban(accountIncreaseRequest.getIban());
-        BigDecimal sum = account.getBalance().add(accountIncreaseRequest.getBalance());
+        BigDecimal sum = (account.getBalance() != null ? account.getBalance() : BigDecimal.ZERO)
+                .add(accountIncreaseRequest.getBalance());
         account.setBalance(sum);
         account.setIncreaseBalanceAt(LocalDateTime.now());
         accountRepository.save(account);
-        return accountMapper.INSTANCE.toIncreaseResponse(account);
+        return accountMapper.toIncreaseResponse(account);
     }
 
     @Transactional
@@ -94,7 +94,7 @@ public class AccountService {
         account.setBalance(sum);
         account.setIncreaseBalanceAt(LocalDateTime.now());
         accountRepository.save(account);
-        return accountMapper.INSTANCE.toIncreaseResponse(account);
+        return accountMapper.toIncreaseResponse(account);
     }
 
     @Transactional
