@@ -1,13 +1,10 @@
 package com.rustam.ms_account.service;
 
-import com.rustam.ms_account.dao.entity.Account;
 import com.rustam.ms_account.dao.entity.TransferHistory;
 import com.rustam.ms_account.dao.enums.AccountStatus;
 import com.rustam.ms_account.dao.repository.TransferHistoryRepository;
-import com.rustam.ms_account.dto.AccountDto;
 import com.rustam.ms_account.dto.request.TransferRequest;
 import com.rustam.ms_account.dto.response.AccountResponse;
-import com.rustam.ms_account.dto.response.TransferResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +41,6 @@ public class TransferService {
                 .senderIban(accountDto.getIban())
                 .receiverIban(receiverAccount.getIban())
                 .amount(transferRequest.getAmount())
-                .createdAt(LocalDateTime.now())
                 .build();
         transferHistoryRepository.save(transferHistory);
         return "Cart to Cart transfer completed successfully.";
